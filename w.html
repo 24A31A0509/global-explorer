@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>World Travel Guide with Images</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef2f7;
+      margin: 0;
+    }
+
+    header {
+      background: #1f3c88;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: 30px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    select {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+    }
+
+    img {
+      width: 100%;
+      max-height: 350px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .info p {
+      margin: 8px 0;
+      line-height: 1.6;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #1f3c88;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #1f3c88;
+      color: white;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🌍 World Travel Guide</h1>
+  <p>Select a place to explore</p>
+</header>
+
+<div class="container">
+  <select id="placeSelect" onchange="showDetails()">
+    <option value="">-- Select a Place --</option>
+    <option value="taj">Taj Mahal</option>
+    <option value="eiffel">Eiffel Tower</option>
+    <option value="greatwall">Great Wall of China</option>
+    <option value="statue">Statue of Liberty</option>
+    <option value="machu">Machu Picchu</option>
+    <option value="colosseum">Colosseum</option>
+    <option value="santorini">Santorini</option>
+    <option value="burj">Burj Khalifa</option>
+    <option value="sydney">Sydney Opera House</option>
+    <option value="niagara">Niagara Falls</option>
+    <option value="petra">Petra</option>
+    <option value="bali">Bali</option>
+    <option value="fuji">Mount Fuji</option>
+    <option value="london">London Eye</option>
+    <option value="christ">Christ the Redeemer</option>
+    <option value="grand">Grand Canyon</option>
+    <option value="angkor">Angkor Wat</option>
+    <option value="times">Times Square</option>
+    <option value="capetown">Cape Town</option>
+    <option value="maldives">Maldives</option>
+  </select>
+
+  <div id="details"></div>
+</div>
+
+<footer>
+  <p>© 2026 World Travel Guide</p>
+</footer>
+
+<script>
+const places = {
+  taj: {
+    img: "https://upload.wikimedia.org/wikipedia/commons/d/da/Taj-Mahal.jpg",
+    location: "Agra, India",
+    description: "A white marble monument and symbol of love.",
+    bestTime: "October – March",
+    attractions: "Taj Mahal, Agra Fort",
+    tips: "Visit at sunrise.",
+    avoid: "Midday crowds"
+  },
+  eiffel: {
+    img: "https://upload.wikimedia.org/wikipedia/commons/a/a8/Tour_Eiffel_Wikimedia_Commons.jpg",
+    location: "Paris, France",
+    description: "Iconic iron tower of Paris.",
+    bestTime: "April – June",
+    attractions: "Summit view, Seine cruise",
+    tips: "Book tickets online.",
+    avoid: "Peak evening hours"
+  },
+  greatwall: {
+    img: "https://upload.wikimedia.org/wikipedia/commons/9/95/GreatWall.jpg",
+    location: "China",
+    description: "Ancient defensive wall.",
+    bestTime: "April – May",
+    attractions: "Mutianyu section",
+    tips: "Wear walking shoes.",
+    avoid: "Weekends"
+  },
+  statue: {
+    img: "https://upload.wikimedia.org/wikipedia/commons/a/a1/Statue_of_Liberty_7.jpg",
+    location: "New York, USA",
+    description: "Symbol of freedom.",
+    bestTime: "April – June",
+    attractions: "Liberty Island",
+    tips: "Pre-book ferry.",
+    avoid: "Peak summer"
+  },
+  machu: {
+    img: "https://upload.wikimedia.org/wikipedia/commons/8/89/Peru_machu_picchu.jpg",
+    location: "Peru",
+    description: "Lost city of the Incas.",
+    bestTime: "May – September",
+    attractions: "Inca Trail",
+    tips: "Adjust to altitude.",
+    avoid: "Rainy season"
+  },
+  colosseum: {
+    img: "https://upload.wikimedia.org/wikipedia/commons/0/0b/Colosseum_%2850%29.jpg",
+    location: "Rome, Italy",
+    description: "Ancient Roman amphitheater.",
+    bestTime: "April – June",
+    attractions: "Roman Forum",
+    tips: "Buy combo tickets.",
+    avoid: "Noon heat"
+  },
+  santorini: {
+    img: "https://upload.wikimedia.org/wikipedia/commons/4/42/Santorini%2C_Greece_%2838178950764%29.jpg",
+    location: "Greece",
+    description: "Island famous for sunsets.",
+    bestTime: "May – June",
+    attractions: "Oia village",
+    tips: "Book hotels early.",
+    avoid: "July–August"
+  },
+  burj: {
+    img: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Burj_Khalifa_from_the_City_Walk.jpg",
+    location: "Dubai, UAE",
+    description: "World’s tallest building.",
+    bestTime: "Nov – March",
+    attractions: "Observation deck",
+    tips: "Visit at sunset.",
+    avoid: "Summer afternoons"
+  },
+  sydney: {
+    img: "https://upload.wikimedia.org/wikipedia/commons/4/40/Sydney_Opera_House_Sails.jpg",
+    location: "Sydney, Australia",
+    description: "Famous performing arts center.",
+    bestTime: "Sept – Nov",
+    attractions: "Harbor views",
+    tips: "Take guided tour.",
+    avoid: "Peak holidays"
+  },
+  niagara: {
+    img: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Niagara_falls%2C_Canada.jpg",
+    location: "USA / Canada",
+    description: "Massive waterfalls.",
+    bestTime: "June – August",
+    attractions: "Boat ride",
+    tips: "Carry rain jacket.",
+    avoid: "Winter ice"
+  },
+  petra: {
+    img: "https://upload.wikimedia.org/wikipedia/commons/5/5d/The_Treasury_%28Al_Khazneh%29%2C_Petra.jpg",
+    location: "Jordan",
+    description: "Ancient rock-cut city.",
+    bestTime: "March – May",
+    attractions: "Treasury",
+    tips: "Start early.",
+    avoid: "Midday heat"
+  },
+  bali: {
+    img: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Tegallalang_Rice_Terraces_Bali.jpg",
+    location: "Indonesia",
+    description: "Tropical island paradise.",
+    bestTime: "April – October",
+    attractions: "Temples, beaches",
+    tips: "Respect culture.",
+    avoid: "Monsoon season"
+  },
+  fuji: {
+    img: "https://upload.wikimedia.org/wikipedia/commons/4/4d/Mount_Fuji_%28111096275%29.jpeg",
+    location: "Japan",
+    description: "Sacred mountain.",
+    bestTime: "July – Sept",
+    attractions: "Fuji lakes",
+    tips: "Check weather.",
+    avoid: "Off-season climbing"
+  },
+  london: {
+    img: "https://upload.wikimedia.org/wikipedia/commons/f/fc/2024-09-26_The_London_Eye_-_01.jpg",
+    location: "London, UK",
+    description: "Observation wheel.",
+    bestTime: "May – Sept",
+    attractions: "City views",
+    tips: "Book early.",
+    avoid: "Rush hours"
+  },
+  christ: {
+    img: "https://upload.wikimedia.org/wikipedia/commons/4/4f/Christ_the_Redeemer_-_Cristo_Redentor.jpg",
+    location: "Rio, Brazil",
+    description: "Famous hilltop statue.",
+    bestTime: "May – Oct",
+    attractions: "Cable car",
+    tips: "Visit on clear day.",
+    avoid: "Cloudy weather"
+  },
+  grand: {
+    img: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Grand_Canyon_%281%29.jpg",
+    location: "Arizona, USA",
+    description: "Huge natural canyon.",
+    bestTime: "Mar – May",
+    attractions: "South Rim",
+    tips: "Carry water.",
+    avoid: "Extreme heat"
+  },
+  angkor: {
+    img: "https://upload.wikimedia.org/wikipedia/commons/4/4b/Angkor_Wat_45.jpg",
+    location: "Cambodia",
+    description: "Largest temple complex.",
+    bestTime: "Nov – March",
+    attractions: "Sunrise view",
+    tips: "Dress modestly.",
+    avoid: "Noon sun"
+  },
+  times: {
+    img: "https://upload.wikimedia.org/wikipedia/commons/2/2e/Times_Square%2CNew_York_CC-BY-SA.jpg",
+    location: "New York, USA",
+    description: "Entertainment hub.",
+    bestTime: "Evenings",
+    attractions: "Night lights",
+    tips: "Visit after sunset.",
+    avoid: "Late-night crowds"
+  },
+  capetown: {
+    img: "https://upload.wikimedia.org/wikipedia/commons/2/22/Cape_Town_view.jpg",
+    location: "South Africa",
+    description: "Coastal city.",
+    bestTime: "Mar – May",
+    attractions: "Table Mountain",
+    tips: "Check weather.",
+    avoid: "Windy days"
+  },
+  maldives: {
+    img: "https://upload.wikimedia.org/wikipedia/commons/6/62/Maldives_islands%2C_Indian_Ocean.jpg",
+    location: "Indian Ocean",
+    description: "Luxury island destination.",
+    bestTime: "Nov – April",
+    attractions: "Snorkeling",
+    tips: "Plan budget.",
+    avoid: "Rainy season"
+  }
+};
+
+function showDetails() {
+  const key = document.getElementById("placeSelect").value;
+  const d = document.getElementById("details");
+
+  if (!key) {
+    d.innerHTML = "";
+    return;
+  }
+
+  const p = places[key];
+  d.innerHTML = `
+    <img src="${p.img}" alt="${key}">
+    <p><span class="label">📍 Location:</span> ${p.location}</p>
+    <p><span class="label">📝 Description:</span> ${p.description}</p>
+    <p><span class="label">📅 Best Time:</span> ${p.bestTime}</p>
+    <p><span class="label">⭐ Attractions:</span> ${p.attractions}</p>
+    <p><span class="label">💡 Tips:</span> ${p.tips}</p>
+    <p><span class="label">⚠ Areas to Avoid:</span> ${p.avoid}</p>
+  `;
+}
+</script>
+
+</body>
+</html>
